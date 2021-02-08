@@ -1,6 +1,7 @@
 
 import discord
 from discord.ext import commands
+from tokenkey import tokenkey
 
 description = str("IneedAHomie Use must use the prefix ( ! ) to uses commands.")
 bot = commands.Bot(command_prefix = "!", description = description)
@@ -44,4 +45,4 @@ async def serverInfo(ctx):
 	message = f"Le serveur **{serverName}** contient *{numberOfPerson}* personnes ! \nLa description du serveur est {serverDescription}. \nCe serveur possède {numberOfTextChannels} salons écrit et {numberOfVoiceChannels} salon vocaux."
 	await ctx.send(message)
 
-bot.run("ODA4MzM2ODAzMjQ0NDA4OTMz.YCFEUA.AkW1ONnbMob2Xg-XTLAeaprgrk4") #Ceci est le token de mon bot. Changez le avec celui de votre bot
+bot.run("tokenkey") #Ceci est le token de mon bot. Changez le avec celui de votre bot
