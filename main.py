@@ -45,4 +45,4 @@ async def serverInfo(ctx):
 	message = f"Le serveur **{serverName}** contient *{numberOfPerson}* personnes ! \nLa description du serveur est {serverDescription}. \nCe serveur possède {numberOfTextChannels} salons écrit et {numberOfVoiceChannels} salon vocaux."
 	await ctx.send(message)
 
-bot.run("tokenkey") #Ceci est le token de mon bot. Changez le avec celui de votre bot
+bot.run(tokenkey) #Ceci est le token de mon bot. Changez le avec celui de votre bot
