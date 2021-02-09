@@ -1,5 +1,6 @@
 .ipynb_checkpoints
 __pycache__
-tokenkey.py
-trash/
 .env
+.env_debug
+.vscode/*
+.vscode
