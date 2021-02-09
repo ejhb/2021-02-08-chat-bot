@@ -1,4 +1,3 @@
-
 import discord
 from discord.ext import commands
 from tokenkey import tokenkey
@@ -12,11 +11,11 @@ async def on_ready():
 
 @bot.command()
 async def coucou(ctx):
-	await ctx.send("Coucou !")
+	await ctx.send("Coucou {} !".format(ctx.message.author.mention))
 
 @bot.command()
 async def dan(ctx):
-	await ctx.send("Dan a un boss", tts=True)
+	await ctx.send("{} a un boss".format(ctx.message.author.mention), tts=True)
 
 @bot.command()
 async def bouffon(ctx):
@@ -32,7 +31,7 @@ async def hello(ctx):
 
 @bot.command()
 async def goodbye(ctx):
-	await ctx.send("GoodBye :'(", tts=True)
+	await ctx.send("GoodBye {}: '(".format(ctx.message.author.mention), tts=True)
 
 @bot.command()
 async def serverInfo(ctx):
