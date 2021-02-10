@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 import random
-from ftools import get_momma_jokes
+
 import asyncio
 
 
