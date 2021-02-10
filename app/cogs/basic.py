@@ -36,6 +36,7 @@ class Basic(commands.Cog):
             pass
         else :
             x = message.content.split()
+            print(x)
             #Possible greetings from user
             Cheers = ["Hi", "hi", "Hello", "hello","bonjour","salut","coucou","ciao","Hey","Yo","Sup","sup","yo","hey"]
             unCheers= ["bye", "Bye", "cya", "cu","ciao","aurevoir","Aurevoir","a+","A+","++",]

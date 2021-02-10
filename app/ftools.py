@@ -10,4 +10,3 @@ async def get_momma_jokes():
     random_category = random.choice(list(jokes.keys()))
     insult = random.choice(list(jokes[random_category]))
     return insult
-
