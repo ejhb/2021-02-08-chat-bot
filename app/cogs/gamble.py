@@ -16,7 +16,7 @@ class Gamble(commands.Cog):
         n = random.randrange(1, 7)
         await ctx.send(n)
 
-    @commands.command(brief = "Pile or face?")
+    @commands.command(brief = "Toss a coin for your witcher")
     async def coin(self, ctx):
         n = random.randint(0, 1)
         await ctx.send("Pile" if n == 1 else "Face")
