@@ -13,6 +13,14 @@ async def get_momma_jokes():
     insult = random.choice(list(jokes[random_category]))
     return insult
 
+def mods_or_owner():
+    """
+    Check that the user has the correct role to execute a command
+    """
+    def predicate(ctx):
+        return commands.check_any(commands.is_owner(), commands.has_role(MODERATOR_ROLE_NAME))
+    return commands.check(predicate)
+
 
 # def import_list_lair():
 #     pair_file = open(os.path.join(DATA_DIR,"list_pairs.py")) 

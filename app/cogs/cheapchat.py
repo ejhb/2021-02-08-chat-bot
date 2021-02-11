@@ -4,6 +4,20 @@ from discord.ext import commands
 from data.list_pairs import pairs , reflections
 
 
+# while this cog activate so far console return : NEED TO BE FIX ASAP
+# Ignoring exception in on_message
+# Traceback (most recent call last):
+#   File "/home/joshua/anaconda3/envs/homie/lib/python3.9/site-packages/discord/client.py", line 343, in _run_event
+#     await coro(*args, **kwargs)
+#   File "/home/joshua/Documents/git-workspace/stand-alone-projects/2021/2021-02-08-chat-bot/app/cogs/cheapchat.py", line 96, in converse
+#     await message.channel.send(self.respond(user_input))
+#   File "/home/joshua/anaconda3/envs/homie/lib/python3.9/site-packages/discord/abc.py", line 935, in send
+#     data = await state.http.send_message(channel.id, content, tts=tts, embed=embed,
+#   File "/home/joshua/anaconda3/envs/homie/lib/python3.9/site-packages/discord/http.py", line 247, in request
+#     raise HTTPException(r, data)
+# discord.errors.HTTPException: 400 Bad Request (error code: 50006): Cannot send an empty message
+
+
 class Cheapchat(commands.Cog):
     def __init__(self,bot, pairs=pairs, reflections=reflections):
         """
