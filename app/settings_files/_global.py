@@ -15,7 +15,7 @@ REDDIT_ENABLED_MEME_SUBREDDITS = [
     'atbge',
     'beamazed',
     'nextfuckinglevel',
-    'earthporn',
+    'earthporn'
 ]
 REDDIT_ENABLED_NSFW_SUBREDDITS = [
     'nsfw'
