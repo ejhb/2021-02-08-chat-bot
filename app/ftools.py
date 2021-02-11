@@ -1,9 +1,12 @@
-import random
+
 import json
 import os
-import importlib
+import random
 
-from settings import * 
+import discord
+from discord.ext import commands
+
+from settings import *
 
 
 async def get_momma_jokes():

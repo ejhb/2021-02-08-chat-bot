@@ -13,6 +13,11 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def unload(self, ctx, cog: str):
+        """A command which unload cogs module
+        Parameters
+        ------------
+        !unload cogs.module 
+        """
         try:
             self.bot.unload_extension(cog)
         except Exception as e:
@@ -24,6 +29,11 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def load(self, ctx, cog: str):
+        """A command which load cogs module
+        Parameters
+        ------------
+        !unload cogs.module 
+        """
         try:
             self.bot.load_extension(cog)
         except Exception as e:
@@ -35,6 +45,11 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx, cog: str):
+        """A command which reload cogs module
+        Parameters
+        ------------
+        !unload cogs.module 
+        """
         try:
             self.bot.unload_extension(cog)
             self.bot.load_extension(cog)
@@ -46,6 +61,11 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def status(self, ctx, *args):
+        """Server status
+        Parameters
+        ------------
+        !status
+        """
         guild = ctx.guild
 
         no_voice_channels = len(guild.voice_channels)

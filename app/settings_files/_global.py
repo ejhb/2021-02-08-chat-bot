@@ -26,4 +26,4 @@ REDDIT_ENABLED_NSFW_SUBREDDITS = [
 
 #Permissions 
 
-MODERATOR_ROLE_NAME ="Moderator"
+MODERATOR_ROLE_NAME = "Moderator"

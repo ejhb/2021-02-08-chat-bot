@@ -4,9 +4,9 @@ from settings import *
 
 
 
-description = str("Homie-bot allow theses prefix  !  /  $  . to use his/her commands. \n  Example : \n    !help    /help    $help    .help") 
+description = str("Homie-bot allow theses prefix  !   $  . to use his/her commands. \n  Example : \n    !help    /help    $help    .help") 
 
-bot = commands.Bot(command_prefix = ['!','/','$','.'], description = description)
+bot = commands.Bot(command_prefix = ['!','$','.'], description = description)
 
 #add dynamicly new extension from dir.cogs
 for filename in os.listdir("./cogs"):
