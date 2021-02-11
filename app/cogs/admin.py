@@ -13,7 +13,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def unload(self, ctx, cog: str):
-        """A command which unload cogs module
+        """A command which unload cogs module.
         Parameters
         ------------
         !unload cogs.module 
@@ -29,7 +29,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def load(self, ctx, cog: str):
-        """A command which load cogs module
+        """A command which load cogs module.
         Parameters
         ------------
         !unload cogs.module 
@@ -45,7 +45,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def reload(self, ctx, cog: str):
-        """A command which reload cogs module
+        """A command which reload cogs module.
         Parameters
         ------------
         !unload cogs.module 
@@ -61,7 +61,7 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def status(self, ctx, *args):
-        """Server status
+        """Server status.
         Parameters
         ------------
         !status

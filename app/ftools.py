@@ -24,9 +24,9 @@ def mods_or_owner():
         return commands.check_any(commands.is_owner(), commands.has_role(MODERATOR_ROLE_NAME))
     return commands.check(predicate)
 
-
-# def import_list_lair():
-#     pair_file = open(os.path.join(DATA_DIR,"list_pairs.py")) 
-#     return pairs
-
-# print(pair_file.read())
+async def notify_user(member, message):
+    if member is not None:
+        channel = member.dm_channel
+        if channel is None:
+            channel = await member.create_dm()
+        await channel.send(message)

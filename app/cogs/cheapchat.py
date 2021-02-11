@@ -102,7 +102,7 @@ class Cheapchat(commands.Cog):
     @commands.command()
     async def toggler(self , ctx, option: str = ""):
         """
-        Toggle the listener function on or off
+        Toggle the listener function on or off.
         Parameters
         ------------
         !toggler "arg"
@@ -119,7 +119,7 @@ class Cheapchat(commands.Cog):
         else:
             await ctx.send("Option must be on or off")
 
-    #@commands.command(brief = "conversation")
+
     @commands.Cog.listener("on_message")
     async def converse(self, message):
         if self.listen is False :

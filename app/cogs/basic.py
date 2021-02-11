@@ -1,24 +1,43 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands import CommandNotFound
+from ftools import notify_user
 import random
 
 class Basic(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    ## command error feedback
-    @commands.Cog.listener()
-    async def on_command_error(self, ctx, ex):
-        if isinstance(ex, CommandNotFound):
-            await ctx.send("Unfortunately we failed to find your command please refer to !help")
-        elif hasattr(ex,"original"):
-            raise ex.original
-        else : 
-            raise ex
-        # await ctx.send(f'What do you mean by {ex.original} ? \nPlease check with !help, or on the manual at trucGithub.com')
+    @commands.command()
+    async def poke(self, ctx, member: discord.Member = None):
+        """Send a poke to mention user.
+        Parameters
+        ------------
+        !poke @user
+        """
+        if member is not None:
+            message = "%s Require your presence" % ctx.author.name
+            await notify_user(member, message)
+        else:
+            await ctx.send("Please use @mention to poke someone.")
+    
+    @commands.command()
+    async def dm(self, ctx, member: discord.Member = None , message: str=""):
+        """Send a dm to mention user.
+        Parameters
+        ------------
+        !poke @user "direct message"
+        """
+        if member is not None : 
+            dm = f'{ctx.author.name} say : {message}'
+            await notify_user(member, message = dm)
+        elif message == "":
+            await ctx.send("Please fill your message to dm someone")
+        else :
+            await ctx.send("Please use @mention to message someone.")
 
-    @commands.command(name='repeat', aliases=['mimic', 'copy'])
+
+    @commands.command(name='repeat', aliases=['mimic', 'copy','say'])
     async def say(self, ctx, *, inp: str):
         """A simple command which repeats your input!
         Parameters
@@ -39,8 +58,13 @@ class Basic(commands.Cog):
             if error.param.name == 'inp':
                 await ctx.send("You forgot to give me input to repeat!")
 
-    @commands.command(brief="Create an invite")
+    @commands.command()
     async def invite(self, ctx):
+        '''Create an server invite.
+        Parameters
+        ------------
+        !invite
+        '''
         link = await ctx.channel.create_invite(max_age=1)
         await ctx.send(link)
 
