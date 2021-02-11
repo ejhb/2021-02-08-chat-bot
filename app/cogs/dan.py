@@ -11,7 +11,7 @@ class Misc(commands.Cog):
         print('Message from {0.author}:{0.content}'.format(message))
 
         if message.content == "bouffon" :
-            await message.channel.send("So young to be a boofoon", tts=True)
+            await message.channel.send("So young to be a buffoon", tts=True)
         if message.content == "dan evil":
             await message.channel.send("Dan is a evil worshiper", tts=True)
             
