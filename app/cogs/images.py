@@ -55,6 +55,7 @@ class Images(commands.Cog):
 
     @commands.command(brief="Random picture of a meow")
     async def cat(self, ctx):
+        """Pick a random cat picture from https://random.cat"""
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get("http://aws.random.cat/meow") as r:
@@ -68,6 +69,7 @@ class Images(commands.Cog):
 
     @commands.command(brief="Random picture of a woof")
     async def dog(self, ctx):
+        """Pick a random dog picture from https://random.dog"""
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get("https://random.dog/woof.json") as r:
@@ -81,6 +83,7 @@ class Images(commands.Cog):
 
     @commands.command(brief="Random picture of a floofy")
     async def fox(self, ctx):
+        """Pick a random fox picture from https://randomfox.ca"""
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get("https://randomfox.ca/floof/") as r:
