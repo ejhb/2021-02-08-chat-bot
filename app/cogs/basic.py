@@ -91,5 +91,3 @@ class Basic(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Basic(bot))
-
-# # https://stackoverflow.com/questions/65062365/discord-py-cog-problem-with-on-message-event-dont-work
