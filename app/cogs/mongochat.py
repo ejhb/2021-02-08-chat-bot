@@ -68,7 +68,7 @@ class Mongochat(commands.Cog):
         mydb = client["homie"]
         posts = mydb["posts"]
         
-        mdbquery = msg # Replace with yout text query
+        mdbquery = msg # Replace with your text query
         
         # {'$meta': 'textScore'} will add a 'score' to each result, and we sort using it:
         res = posts.find({'$text': {'$search': mdbquery} },{'score': {'$meta': 'textScore'}}).sort([('score', {'$meta': 'textScore'})])
