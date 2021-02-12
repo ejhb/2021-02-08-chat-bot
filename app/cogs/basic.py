@@ -11,19 +11,33 @@ class Basic(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self, ctx, ex):
         if isinstance(ex, CommandNotFound):
-            await ctx.send("Unfortunately we didn't found your comments please refer to !help")
+            await ctx.send("Unfortunately we failed to find your command please refer to !help")
         elif hasattr(ex,"original"):
             raise ex.original
         else : 
             raise ex
         # await ctx.send(f'What do you mean by {ex.original} ? \nPlease check with !help, or on the manual at trucGithub.com')
 
-    @commands.command(brief="Repeating sentence")
-    async def say(self, ctx, *args):
-        if len(args) > 0 :
-            await ctx.send(" ".join(args))
-        else : 
-            await ctx.send("It need arguments")
+    @commands.command(name='repeat', aliases=['mimic', 'copy'])
+    async def say(self, ctx, *, inp: str):
+        """A simple command which repeats your input!
+        Parameters
+        ------------
+        inp: str
+            The input you wish to repeat.
+        """
+        await ctx.send(inp)
+        
+    @say.error
+    async def say_handler(self, ctx, error):
+        """A local Error Handler for our command do_repeat.
+        This will only listen for errors in do_repeat.
+        The global on_command_error will still be invoked after.
+        """
+
+        if isinstance(error, commands.MissingRequiredArgument):
+            if error.param.name == 'inp':
+                await ctx.send("You forgot to give me input to repeat!")
 
     @commands.command(brief="Create an invite")
     async def invite(self, ctx):
