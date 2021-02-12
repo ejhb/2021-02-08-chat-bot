@@ -4,3 +4,4 @@ __pycache__
 .env_debug
 .vscode/*
 .vscode
+node_modules/*
