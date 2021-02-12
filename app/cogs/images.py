@@ -78,7 +78,7 @@ class Images(commands.Cog):
 
     @commands.command()
     async def dog(self, ctx):
-        '''Will post a random picture of a cat from : http://random.dog/.
+        '''Will post a random picture of a dog from : http://random.dog/.
          Parameters
         ------------
         !cat 
@@ -96,7 +96,7 @@ class Images(commands.Cog):
 
     @commands.command()
     async def fox(self, ctx):
-        '''Will post a random picture of a cat from : https://randomfox.ca/.
+        '''Will post a random picture of a fox from : https://randomfox.ca/.
          Parameters
         ------------
         !cat 
