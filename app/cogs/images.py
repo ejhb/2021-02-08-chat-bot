@@ -17,8 +17,13 @@ class Images(commands.Cog):
             self.reddit = praw.Reddit(client_id=REDDIT_APP_ID, client_secret=REDDIT_APP_SECRET,
                                       user_agent="HOMIE-BOT:%s:1.0" % REDDIT_APP_ID)
 
-    @commands.command(brief ="Pick a random post from a subreddit")
+    @commands.command()
     async def subred(self, ctx, subreddit: str = ""):
+        '''Pick a random post from a subreddit.
+         Parameters
+        ------------
+        !subred "subreddit"  (if none subreddit selected it will pick a random one from the list)
+        '''
         async with ctx.channel.typing():
             if self.reddit:
                 # start working
@@ -53,9 +58,13 @@ class Images(commands.Cog):
             else:
                 await ctx.send("This is not working. Contact Administrator.")
 
-    @commands.command(brief="Random picture of a meow")
+    @commands.command()
     async def cat(self, ctx):
-        """Pick a random cat picture from https://random.cat"""
+        '''Will post a random picture of a cat from : http://aws.random.cat/meow.
+         Parameters
+        ------------
+        !cat 
+        '''
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get("http://aws.random.cat/meow") as r:
@@ -67,9 +76,13 @@ class Images(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(brief="Random picture of a woof")
+    @commands.command()
     async def dog(self, ctx):
-        """Pick a random dog picture from https://random.dog"""
+        '''Will post a random picture of a cat from : http://random.dog/.
+         Parameters
+        ------------
+        !cat 
+        '''
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get("https://random.dog/woof.json") as r:
@@ -81,9 +94,13 @@ class Images(commands.Cog):
 
                     await ctx.send(embed=embed)
 
-    @commands.command(brief="Random picture of a floofy")
+    @commands.command()
     async def fox(self, ctx):
-        """Pick a random fox picture from https://randomfox.ca"""
+        '''Will post a random picture of a cat from : https://randomfox.ca/.
+         Parameters
+        ------------
+        !cat 
+        '''
         async with ctx.channel.typing():
             async with aiohttp.ClientSession() as cs:
                 async with cs.get("https://randomfox.ca/floof/") as r:

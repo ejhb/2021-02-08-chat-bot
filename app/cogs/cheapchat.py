@@ -1,11 +1,13 @@
 import re
 import random
+
 from discord.ext import commands
 from data.list_pairs import pairs , reflections
+# from cogs.botfeatures import BotFeatures
 
 
 class Cheapchat(commands.Cog):
-    def __init__(self,bot, pairs=pairs, reflections=reflections):
+    def __init__(self,bot, pairs=pairs, reflections=reflections, listen=False):
         """
         Initialize the chatbot.  Pairs is a list of patterns and responses.  Each
         pattern is a regular expression matching the user's statement or question,
@@ -20,11 +22,11 @@ class Cheapchat(commands.Cog):
         :param reflections: A mapping between first and second person expressions
         :rtype: None
         """
-
         self._pairs = [(re.compile(x, re.IGNORECASE), y) for (x, y) in pairs]
         self._reflections = reflections
         self._regex = self._compile_reflections()
         self.bot = bot
+        self.listen = listen
 
 
     def _compile_reflections(self):
@@ -84,16 +86,37 @@ class Cheapchat(commands.Cog):
                     resp = resp[:-2] + "?"
                 return resp
 
+    @commands.command()
+    async def toggler(self , ctx, option: str = ""):
+        """
+        Toggle the listener function on or off.
+        Parameters
+        ------------
+        !toggler "arg"
+        """
+        self.listen = False
+        if option == "on":
+            self.listen = True
+            await ctx.send("Toggler has been set on")
+            return self.listen 
+        elif option == "off":
+            self.listen = False
+            await ctx.send("Toggler has been set off")
+            return self.listen
+        else:
+            await ctx.send("Option must be on or off")
 
-    # Hold a conversation with a chatbot
-    #@commands.command(brief = "conversation")
     @commands.Cog.listener("on_message")
     async def converse(self, message):
-        if message.author.bot:
+        if self.listen is False :
             return
-        else:
-            user_input = message.content
-            await message.channel.send(self.respond(user_input))
+        elif self.listen is True :
+            if message.author.bot:
+                return
+            else:
+                user_input = message.content
+                await message.channel.send(self.respond(user_input))
+
         #while user_input != quit:
         #    user_input = quit
         #    try:
