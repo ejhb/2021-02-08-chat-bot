@@ -13,7 +13,6 @@ from nltk import word_tokenize
 import string
 from nltk.stem.snowball import SnowballStemmer
 from nltk import ngrams
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 import pymongo
 
