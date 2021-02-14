@@ -19,7 +19,7 @@ class Misc(commands.Cog):
         words = message.content.split()
         for word in words:
             if word in badwords:
-                await message.channel.send("Vilain mot", tts=True)
+                await message.channel.send("[*** Bad word detected! ***]", tts=True)
         
         # if message.content == "bouffon" :
         #     await message.channel.send("So young to be a boofoon", tts=True)chiergro
