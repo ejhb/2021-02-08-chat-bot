@@ -19,7 +19,7 @@ import pymongo
 
 class Mongochat(commands.Cog):
 
-    collDict = {"beer":"beer"}
+    collDict = {"beer":"beer", "ia":"ia", "mechanics":"mechanics", "data_science":"data_science", "movies":"movies"}
     
     def __init__(self,bot, listen=True):
         """
@@ -27,8 +27,6 @@ class Mongochat(commands.Cog):
         """
         self.bot = bot
         self.listen = listen
-        #self.collDict = {"beer":"posts"}
-
 
     @commands.command()
     async def toggler2(self , ctx, option: str = ""):
@@ -70,9 +68,8 @@ class Mongochat(commands.Cog):
     def _queryMongo(self, msg, channel):
         client = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = client["homie"]
-        #posts = mydb["posts"]
-        print("self.collDict[channel]",self.collDict[channel])
         posts = mydb[self.collDict[channel]]
+        
         mdbquery = msg # Replace with your text query
         
         # {'$meta': 'textScore'} will add a 'score' to each result, and we sort using it:
@@ -113,7 +110,6 @@ class Mongochat(commands.Cog):
                     await message.channel.send( _response )
                 else:
                     return
-
         
 def setup(bot):
     bot.add_cog(Mongochat(bot))
