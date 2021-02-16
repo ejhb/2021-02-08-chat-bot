@@ -66,7 +66,7 @@ class Mongochat(commands.Cog):
     def _queryMongo(self, msg):
         client = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = client["homie"]
-        posts = mydb["posts"]
+        posts = mydb["movies"]
         
         mdbquery = msg # Replace with yout text query
         
