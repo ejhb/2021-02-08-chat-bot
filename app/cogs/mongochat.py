@@ -18,12 +18,17 @@ import pymongo
 
 
 class Mongochat(commands.Cog):
+
+    collDict = {"beer":"beer"}
+    
     def __init__(self,bot, listen=True):
         """
         Initialize the chatbot.
         """
         self.bot = bot
         self.listen = listen
+        #self.collDict = {"beer":"posts"}
+
 
     @commands.command()
     async def toggler2(self , ctx, option: str = ""):
@@ -62,11 +67,12 @@ class Mongochat(commands.Cog):
         original = ' '.join(stem_message)
         return original
 
-    def _queryMongo(self, msg):
+    def _queryMongo(self, msg, channel):
         client = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = client["homie"]
-        posts = mydb["posts"]
-        
+        #posts = mydb["posts"]
+        print("self.collDict[channel]",self.collDict[channel])
+        posts = mydb[self.collDict[channel]]
         mdbquery = msg # Replace with your text query
         
         # {'$meta': 'textScore'} will add a 'score' to each result, and we sort using it:
@@ -88,8 +94,8 @@ class Mongochat(commands.Cog):
         return html2markdown.convert( resp )
 
 
-    def respond(self, msg):
-        return self._queryMongo( self._lower(msg) )
+    def respond(self, msg, channel):
+        return self._queryMongo( self._lower(msg), channel )
 
     @commands.Cog.listener("on_message")
     async def mongoconverse(self, message):
@@ -100,7 +106,9 @@ class Mongochat(commands.Cog):
                 return
             else:
                 print("message.content: ", message.content)
-                _response = self.respond(message.content)
+                channel = str(message.channel)
+                print("message.channel: ",channel)
+                _response = self.respond(message.content, channel)
                 if len(_response) > 0:
                     await message.channel.send( _response )
                 else:
