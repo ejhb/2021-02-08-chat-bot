@@ -89,7 +89,7 @@ class Mongochat(commands.Cog):
                     scorelist.append(it['score'])
                     score_m = scorelist[0]/nb_de_mot
                 except:
-                    #print("No response found for: ", msg)
+                    print("No response found for: ", msg)
                     ""
             print("questlist:", questlist)
             print("questlist[0]",questlist[0])
