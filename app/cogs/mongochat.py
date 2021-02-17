@@ -19,7 +19,7 @@ import pymongo
 
 class Mongochat(commands.Cog):
 
-    collDict = {"beer":"beer", "ia":"ia", "mechanics":"mechanics", "data_science":"data_science", "movies":"movies"}
+    collDict = { "beer":"beer", "ia":"ia", "mechanics":"mechanics", "data_science":"data_science", "movies":"movies"}
     
     def __init__(self,bot, listen=True):
         """
@@ -66,36 +66,39 @@ class Mongochat(commands.Cog):
         return original
 
     def _queryMongo(self, msg, channel):
-        client = pymongo.MongoClient("mongodb://localhost:27017/")
-        mydb = client["homie"]
-        posts = mydb[self.collDict[channel]]
-        
-        mdbquery = msg # Replace with your text query
-        
-        # {'$meta': 'textScore'} will add a 'score' to each result, and we sort using it:
-        res = posts.find({'$text': {'$search': mdbquery} },{'score': {'$meta': 'textScore'}}).sort([('score', {'$meta': 'textScore'})])
-        # 'res' is a cursor, not a list, so we must iterate through it:
-        listmot = msg.split()
-        nb_de_mot = len(listmot)
-        print(nb_de_mot)
-        
-        questlist = []
-        scorelist = []
-        
-        for it in res:
-            try:
-                questlist.append(it['AcceptedAnswerId'])
-                scorelist.append(it['score'])
-                score_m = scorelist[0]/nb_de_mot
-            except:
-                #print("No response found for: ", msg)
-                ""
-        print("questlist:", questlist)
-        print("questlist[0]",questlist[0])
-        print("scorelist",scorelist)
-        print("scorelist[0]",scorelist[0])
-        print("Mean:",score_m) #pas moins de 0.4
-        
+        try:
+            client = pymongo.MongoClient("mongodb://localhost:27017/")
+            mydb = client["homie"]
+            posts = mydb[self.collDict[channel]]
+                
+            mdbquery = msg # Replace with your text query
+            
+            # {'$meta': 'textScore'} will add a 'score' to each result, and we sort using it:
+            res = posts.find({'$text': {'$search': mdbquery} },{'score': {'$meta': 'textScore'}}).sort([('score', {'$meta': 'textScore'})])
+            # 'res' is a cursor, not a list, so we must iterate through it:
+            listmot = msg.split()
+            nb_de_mot = len(listmot)
+            print(nb_de_mot)
+            
+            questlist = []
+            scorelist = []
+            
+            for it in res:
+                try:
+                    questlist.append(it['AcceptedAnswerId'])
+                    scorelist.append(it['score'])
+                    score_m = scorelist[0]/nb_de_mot
+                except:
+                    #print("No response found for: ", msg)
+                    ""
+            print("questlist:", questlist)
+            print("questlist[0]",questlist[0])
+            print("scorelist",scorelist)
+            print("scorelist[0]",scorelist[0])
+            print("Mean:",score_m) #pas moins de 0.4
+        except:
+            print("This chann is not related to discussion chatbot or word(s) not found")
+            
         try:
             mongoresp = posts.find_one({"Id": questlist[0]})
             #print("score: ", mongoresp['score'])
