@@ -75,11 +75,9 @@ class Mongochat(commands.Cog):
             client = pymongo.MongoClient("mongodb://localhost:27017/")
             mydb = client["homie"]
             posts = mydb[self.collDict[channel]]
-                
-            mdbquery = msg # Replace with your text query
             
             # {'$meta': 'textScore'} will add a 'score' to each result, and we sort using it:
-            res = posts.find({'$text': {'$search': mdbquery} },{'score': {'$meta': 'textScore'}}).sort([('score', {'$meta': 'textScore'})])
+            res = posts.find({'$text': {'$search': msg} },{'score': {'$meta': 'textScore'}}).sort([('score', {'$meta': 'textScore'})])
             # 'res' is a cursor, not a list, so we must iterate through it:
             listmot = msg.split()
             nb_de_mot = len(listmot)
@@ -113,25 +111,44 @@ class Mongochat(commands.Cog):
         return html2markdown.convert( resp )
 
 
-    def respond(self, msg, channel):
-        tokenized = self._lower(msg, channel)
-        if len(tokenized) > 0:
-            return self._queryMongo( tokenized, channel )
+    userrequests = {}
+    
+    def respond(self, msg, channel, user):
+        if not channel in list(self.collDict.keys()):
+            if msg.endswith("?"):
+                self.userrequests[user] = msg
+                tempresp = "What is the topic of your question? ("
+                for it in list(self.collDict.keys()):
+                    tempresp = tempresp + it + " "
+                tempresp = tempresp.strip() + ")"
+                return tempresp
+            elif msg in list(self.collDict.keys()):
+               oldmsg = self.userrequests[user]
+               tokenized = self._lower(oldmsg, msg)
+               return self._queryMongo( tokenized, msg )
+            else:
+                return ""
+               
         else:
-            return
+            tokenized = self._lower(msg, channel)
+            if len(tokenized) > 0 and msg.endswith("?"):
+                return self._queryMongo( tokenized, channel )
+            else:
+                return ""
 
     @commands.Cog.listener("on_message")
     async def mongoconverse(self, message):
         if self.listen is False :
             return
-        elif self.listen is True :
+        elif self.listen is True:
+            print("message.author: ", str(message.author))
             if message.author.bot or message.content.startswith('!'):
                 return
             else:
                 print("message.content: ", message.content)
                 channel = str(message.channel)
                 print("message.channel: ",channel)
-                _response = self.respond(message.content, channel)
+                _response = self.respond(message.content, channel, message.author)
                 if len(_response) > 0:
                     await message.channel.send( _response )
                 else:
