@@ -97,8 +97,11 @@ class Mongochat(commands.Cog):
 
 
     def respond(self, msg, channel):
-        
-        return self._queryMongo( self._lower(msg, channel), channel )
+        tokenized = self._lower(msg, channel)
+        if len(tokenized) > 0:
+            return self._queryMongo( tokenized, channel )
+        else:
+            return
 
     @commands.Cog.listener("on_message")
     async def mongoconverse(self, message):
