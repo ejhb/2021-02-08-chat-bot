@@ -13,12 +13,14 @@ from nltk import word_tokenize
 import string
 from nltk.stem.snowball import SnowballStemmer
 from nltk import ngrams
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 import pymongo
 
 
 class Mongochat(commands.Cog):
+
+    collDict = {"beer":"beer", "ia":"ia", "mechanics":"mechanics", "data_science":"data_science", "movies":"movies"}
+    
     def __init__(self,bot, listen=True):
         """
         Initialize the chatbot.
@@ -51,7 +53,7 @@ class Mongochat(commands.Cog):
         cleantext = re.sub(cleanr, '', raw_html)
         return cleantext
 
-    def _lower(self, x):
+    def _lower(self, x, channel):
         n_message = x.lower() #change lettres to lower lettres
         t_message = word_tokenize(n_message) #tokenize
         exclude = set(string.punctuation) # detecter les signes de ponctuation 
@@ -60,15 +62,20 @@ class Mongochat(commands.Cog):
         tokens_without_stopwords = [word for word in t_message if word not in _stopwords]
         stemmer = SnowballStemmer("english")
         stem_message =set(stemmer.stem(token) for token in tokens_without_stopwords)
-        original = ' '.join(stem_message)
-        return original
+        stemmsg2 = []
+        for it in stem_message:
+            if str(it) != str(channel):
+                stemmsg2.append(it)
+            else:
+                print("filtering out ", it)
+        return ' '.join(stemmsg2)
 
-    def _queryMongo(self, msg):
+    def _queryMongo(self, msg, channel):
         client = pymongo.MongoClient("mongodb://localhost:27017/")
         mydb = client["homie"]
-        posts = mydb["movies"]
+        posts = mydb[self.collDict[channel]]
         
-        mdbquery = msg # Replace with yout text query
+        mdbquery = msg # Replace with your text query
         
         # {'$meta': 'textScore'} will add a 'score' to each result, and we sort using it:
         res = posts.find({'$text': {'$search': mdbquery} },{'score': {'$meta': 'textScore'}}).sort([('score', {'$meta': 'textScore'})])
@@ -89,8 +96,9 @@ class Mongochat(commands.Cog):
         return html2markdown.convert( resp )
 
 
-    def respond(self, msg):
-        return self._queryMongo( self._lower(msg) )
+    def respond(self, msg, channel):
+        
+        return self._queryMongo( self._lower(msg, channel), channel )
 
     @commands.Cog.listener("on_message")
     async def mongoconverse(self, message):
@@ -101,12 +109,13 @@ class Mongochat(commands.Cog):
                 return
             else:
                 print("message.content: ", message.content)
-                _response = self.respond(message.content)
+                channel = str(message.channel)
+                print("message.channel: ",channel)
+                _response = self.respond(message.content, channel)
                 if len(_response) > 0:
                     await message.channel.send( _response )
                 else:
                     return
-
         
 def setup(bot):
     bot.add_cog(Mongochat(bot))

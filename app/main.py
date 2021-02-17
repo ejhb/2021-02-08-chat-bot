@@ -1,6 +1,6 @@
-import discord
+import discord, os
 from discord.ext import commands
-from settings import * 
+from settings import *
 
 
 
