@@ -105,7 +105,13 @@ class Feedback(commands.Cog):
     
    
     @commands.command()
-    async def download_fb(self, ctx, option: str = ""):
+    async def download(self, ctx, option: str = ""):
+        """
+        This command allow you to download question or answer feedback from our database.
+        Parameters
+        ----------
+        !download answer/question 
+        """
     ################################################################################################
     #                                   MOGO DB CONN                                               #
     ################################################################################################
@@ -131,6 +137,8 @@ class Feedback(commands.Cog):
             with open("./data/framer.csv", "rb") as file:
                 await ctx.send("Your file is:", file=discord.File(file, "answer.csv"))
                 file.close()
+        else :
+            await ctx.send("Your must specify the option with : answer or question.")
         # # file = discord.File(csv_question, filename = "question.csv")
         # # with open("./data/framer.csv", "w") as file:
         # #     file.write(csv_question)
