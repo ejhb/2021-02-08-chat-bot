@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.utils import find
 from discord.ext.commands import CommandNotFound
 from ftools import notify_user
 import random
@@ -8,6 +9,24 @@ class Basic(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.Cog.listener()
+    async def on_ready(self):
+        print('Ready!')
+        print('Logged in as ---->', self.bot.user)
+        print('ID:', self.bot.user.id)
+        
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "my-bot":
+                    await channel.send("Hi I'm Homie and I'm ready to assist you.")
+    
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        chans = guild.text_channels
+        for channel in chans:
+            if channel.name == 'general':
+                await channel.send('hi')
+                
     @commands.command()
     async def poke(self, ctx, member: discord.Member = None):
         """Send a poke to mention user.
