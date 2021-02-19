@@ -2,10 +2,16 @@ import discord
 from discord.ext import commands
 import random
 import time
+import pandas as pd
 from ftools import notify_user, mods_or_owner 
-mods_or_owner 
+import pymongo
+from datetime import datetime
+
+
+
 class Feedback(commands.Cog):
-    def __init__(self, bot):
+    
+    def __init__(self,bot):
         self.bot = bot
 
     @commands.command()
@@ -41,6 +47,23 @@ class Feedback(commands.Cog):
         ----------
         !feedback 
         """
+        dateTimeObj = datetime.now()
+        timestampStr = dateTimeObj.strftime("%Y-%m-%d (%H:%M)")
+        ################################################################################################
+        #                                   MOGO DB CONN                                               #
+        ################################################################################################
+        client = pymongo.MongoClient("mongodb://localhost:27017/")
+        mydb = client["homie"]
+        question_feedback = {}
+        quest = mydb.question.find_one(question_feedback)
+        #Load question form db mongo
+        list_q = []
+        for question in quest:
+            list_q.append(question)
+        list_question = list_q[1:]
+
+        new_user = str(ctx.author)    
+        print(ctx.author)   
         guild = ctx.message.guild
         happy_emoji = [":grinning:",":smiley:",":smile:",":grin:",":laughing:",":slight_smile:",":sunglasses:"]
         temp_chan = await guild.create_text_channel("feedback")
@@ -48,7 +71,6 @@ class Feedback(commands.Cog):
         await ctx.send(f'We are ready to hear you about that in {temp_chan.mention}')
         await temp_chan.send(f'Welcome to you {ctx.author.mention} {random.choice(happy_emoji)}')
         await temp_chan.send(f'Are your ready to answers at my questions? (yes/no)')
-        list_question = ["question_a","question_b","question_c","question_d"]
         list_answers = [] 
         msg = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
         if msg.content.lower() == "yes":
@@ -60,15 +82,60 @@ class Feedback(commands.Cog):
                 answers = await self.bot.wait_for('message', check=lambda message: message.author == ctx.author)
                 list_answers.append(answers.content)
             await temp_chan.send("Thanks you for your feedback, we are about to close this channel")
-            time.sleep(5)
-            await notify_user(new_user, f'Thanks you for your feedback, we closed the channel.')
+            time.sleep(1)
+            await notify_user(ctx.author, f'Thanks you for your feedback, we closed the channel.')
             await temp_chan.delete()
             print("L'utilisateur :",ctx.author,"voici ma liste de réponse :",list_answers)
         elif msg.content.lower() == "no":
             await temp_chan.send("Tu as dis no or n")
             await notify_user(ctx.author, f'You close the request')
             await temp_chan.delete()
-
+        ################################################################################################
+        #                                   IMPORT MONGO                                               #
+        ################################################################################################
+        user_feedback = {
+            "user":new_user,
+            "answer1":list_answers[0],
+            "answer2":list_answers[1],
+            "answer3":list_answers[2],
+            "answer4":list_answers[3], 
+            "date-feedback":timestampStr
+        }
+        mydb.user.insert_one(user_feedback)
+    
+   
+    @commands.command()
+    async def download_fb(self, ctx, option: str = ""):
+    ################################################################################################
+    #                                   MOGO DB CONN                                               #
+    ################################################################################################
+        client = pymongo.MongoClient("mongodb://localhost:27017/")
+        mydb = client["homie"]
+        if option == "question" : 
+            df_question = pd.DataFrame(list(mydb.question.find()))
+            df_question = df_question.drop(columns=["_id"])
+            csv_question = df_question.to_csv()
+            with open("./data/framer.csv", "w") as file:
+                file.write(csv_question)
+                file.close()
+            with open("./data/framer.csv", "rb") as file:
+                await ctx.send("Your file is:", file=discord.File(file, "question.csv"))
+                file.close()
+        elif option == "answer" : 
+            df_user = pd.DataFrame(list(mydb.user.find()))
+            df_user = df_user.drop(columns=["_id"])
+            csv_answer = df_user.to_csv()
+            with open("./data/framer.csv", "w") as file:
+                file.write(csv_answer)
+                file.close()
+            with open("./data/framer.csv", "rb") as file:
+                await ctx.send("Your file is:", file=discord.File(file, "answer.csv"))
+                file.close()
+        # # file = discord.File(csv_question, filename = "question.csv")
+        # # with open("./data/framer.csv", "w") as file:
+        # #     file.write(csv_question)
+        # with open("./data/framer.csv", "rb") as file:
+        #     await ctx.send("Your file is:", file=discord.File(file, "question.csv"))
         
 
    
