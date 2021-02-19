@@ -28,35 +28,9 @@ class Mongochat(commands.Cog):
         self.bot = bot
         self.listen = listen
 
-    # @commands.command()
-    # async def toggler2(self , ctx, option: str = ""):
-    #     """
-    #     Toggle the listener function on or off.
-    #     Parameters
-    #     ------------
-    #     !toggler "arg"
-    #     """
-    #     self.listen = False
-    #     if option == "on":
-    #         self.listen = True
-    #         await ctx.send("Toggler has been set on")
-    #         return self.listen 
-    #     elif option == "off":
-    #         self.listen = False
-    #         await ctx.send("Toggler has been set off")
-    #         return self.listen
-    #     else:
-    #         await ctx.send("Option must be on or off")
-
-    def _cleanhtml(self, raw_html):
-        cleanr = re.compile('<.*?>')
-        cleantext = re.sub(cleanr, '', raw_html)
-        return cleantext
-
     def _lower(self, msg, channel):
         if msg == "yes" or msg == "y" or msg == "no" or msg == "n":
             return msg
-        
         n_message = msg.lower() #change lettres to lower lettres
         t_message = word_tokenize(n_message) #tokenize
         exclude = set(string.punctuation) # detecter les signes de ponctuation 
@@ -73,13 +47,13 @@ class Mongochat(commands.Cog):
                 print("filtering out ", it)
         return ' '.join(stemmsg2)
 
-    stockage_premier_phrase = {}
+    userspreviousquestion = {}
     def _queryMongo(self, msg, channel, user):
         print("MSG-_queryMg: ", msg)
  
         if msg == "yes":
-            if user in list(self.stockage_premier_phrase.keys()):
-                return self.stockage_premier_phrase[user]
+            if user in list(self.userspreviousquestion.keys()):
+                return self.userspreviousquestion[user]
             else:
                 return "Yes?"
         elif msg == "no":
@@ -108,7 +82,7 @@ class Mongochat(commands.Cog):
                     tags = tags.strip('<>').replace('><', ' ') 
                     taglist.append(tags)
                     mongoresp = posts.find_one({"Id": questlist[0]})
-                    self.stockage_premier_phrase[user] = mongoresp['Body']
+                    self.userspreviousquestion[user] = mongoresp['Body']
                 except:
                     #print("No response found for: ", msg)
                     ""
