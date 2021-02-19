@@ -1,6 +1,9 @@
 import discord
 from discord.ext import commands
+<<<<<<< HEAD
 from discord.utils import find
+=======
+>>>>>>> 00c4796f25bf7d87f6c6fe4f21500a6247bd7c41
 from discord.ext.commands import CommandNotFound
 from ftools import notify_user
 import random

@@ -52,7 +52,7 @@ class Mongochat(commands.Cog):
         print("MSG-_queryMg: ", msg)
         if msg == "yes":
             if user in list(self.userspreviousquestion.keys()):
-                return self.userspreviousquestion[user]
+                return html2markdown.convert( self.userspreviousquestion[user] )
             else:
                 return ""
         elif msg == "no":
@@ -97,8 +97,10 @@ class Mongochat(commands.Cog):
             if score_m > 1.5:
                 return html2markdown.convert( resp )
             elif score_m > 0.4:
-                
-                return "Did your question concern " + str(taglist) + "?"
+                if len(taglist) > 4:
+                    taglist = taglist[0:4]
+                _taglist = ' '.join(taglist)
+                return "Is your question about the following topics (yes/no): " + _taglist + "?"
             else:
                 return "Could not find ans answer on topic " + channel
 
@@ -111,11 +113,7 @@ class Mongochat(commands.Cog):
                 return self._queryMongo( self._lower(msg, channel), msg, user )
             elif msg.endswith("?"):
                 self.userrequests[user] = msg
-                tempresp = "What is the topic of your question? ("
-                for it in list(self.collDict.keys()):
-                    tempresp = tempresp + it + " "
-                tempresp = tempresp.strip() + ")"
-                return tempresp
+                return "What is the topic of your question? (" + ' '.join(self.collDict.keys()) + ")"
             elif msg in list(self.collDict.keys()):
                print("MSG-respond-is-channel: ", msg)
                oldmsg = self.userrequests[user]
@@ -129,14 +127,17 @@ class Mongochat(commands.Cog):
             if len(tokenized) > 0:
                 return self._queryMongo( tokenized, channel, user )
             else:
-                return "emptyquestion"
+                return ""
         else:
-            return "notaqquestion"
+            if msg == "yes" or msg == "y" or msg == "no" or msg == "n":
+                return self._queryMongo( self._lower(msg, channel), msg, user )
+            else:
+                return ""
 
     @commands.Cog.listener("on_message")
     async def mongoconverse(self, message):
         print("MSG-mongoconverse: ", message.content)
-        if self.listen is False or str(message.channel).startsWith("feedback"):
+        if self.listen is False or str(message.channel).startswith("feedback"):
             return
         elif self.listen is True:
             if message.author.bot or message.content.startswith('!'):
@@ -149,6 +150,7 @@ class Mongochat(commands.Cog):
                     await message.channel.send( _response )
                 else:
                     return
+        
         
 def setup(bot):
     bot.add_cog(Mongochat(bot))
