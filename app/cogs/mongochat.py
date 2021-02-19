@@ -50,12 +50,11 @@ class Mongochat(commands.Cog):
     userspreviousquestion = {}
     def _queryMongo(self, msg, channel, user):
         print("MSG-_queryMg: ", msg)
- 
         if msg == "yes":
             if user in list(self.userspreviousquestion.keys()):
                 return self.userspreviousquestion[user]
             else:
-                return "Yes?"
+                return ""
         elif msg == "no":
             return "No?"
         else:
@@ -137,7 +136,7 @@ class Mongochat(commands.Cog):
     @commands.Cog.listener("on_message")
     async def mongoconverse(self, message):
         print("MSG-mongoconverse: ", message.content)
-        if self.listen is False :
+        if self.listen is False or str(message.channel).startsWith("feedback"):
             return
         elif self.listen is True:
             if message.author.bot or message.content.startswith('!'):
