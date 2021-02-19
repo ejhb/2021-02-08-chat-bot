@@ -2,8 +2,8 @@ import discord
 from discord.ext import commands
 import random
 import time
-from ftools import notify_user
-
+from ftools import notify_user, mods_or_owner 
+mods_or_owner 
 class Feedback(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -68,6 +68,8 @@ class Feedback(commands.Cog):
             await temp_chan.send("Tu as dis no or n")
             await notify_user(ctx.author, f'You close the request')
             await temp_chan.delete()
+
+        
 
    
 

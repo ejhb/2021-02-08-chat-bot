@@ -87,12 +87,12 @@ class Cheapchat(commands.Cog):
                 return resp
 
     @commands.command()
-    async def toggler(self , ctx, option: str = ""):
+    async def cheap(self , ctx, option: str = ""):
         """
         Toggle the listener function on or off.
         Parameters
         ------------
-        !toggler "arg"
+        !cheap on/off
         """
         self.listen = False
         if option == "on":
