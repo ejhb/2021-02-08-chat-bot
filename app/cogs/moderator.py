@@ -8,6 +8,34 @@ class Moderator(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    @commands.has_role('Moderator')
+    async def create_chan(self, ctx, channame: str ="" ):
+        """
+        This commands create a text channel.
+        Parameters
+        ----------
+        !create_chan channelname
+        """
+        guild = ctx.message.guild
+        await guild.create_text_channel(channame)
+
+    
+    @commands.command()
+    @commands.has_role('Moderator')
+    async def delete_chan(self, ctx, given_name=None):
+        """
+        This commands delete a channel.
+        Parameters
+        ----------
+        !delete_chan channelname
+        """
+        for channel in ctx.guild.channels:
+            if channel.name == given_name:
+                #get id = (not usefull yet)
+                wanted_channel_id = channel.id
+                await channel.delete()
+
+    @commands.command()
     @mods_or_owner()
     @commands.guild_only()
     @commands.has_permissions(kick_members=True)

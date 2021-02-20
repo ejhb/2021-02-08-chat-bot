@@ -19,6 +19,35 @@ class Basic(commands.Cog):
             for channel in guild.text_channels:
                 if channel.name == "my-bot":
                     await channel.send("Hi I'm Homie and I'm ready to assist you.")
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "ratings":
+                    await channel.send("Hi here you can feedback my performance by checking emotes.")
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "role":
+                    await channel.send("Please react with theses emotes to get access at features")
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "beer":
+                    await channel.send("Here you can talk beer with me.")
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "movies":
+                    await channel.send("Here you can talk movies with me.")
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "data_science":
+                    await channel.send("Here you can talk data science with me.")
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "mechanics":
+                    await channel.send("Here you can talk mechanics with me.")
+
+        for guild in self.bot.guilds:
+            for channel in guild.text_channels:
+                if channel.name == "ia":
+                    await channel.send("Hi I'm Homie and I'm ready to assist you.")
     
     @commands.Cog.listener()
     async def on_guild_join(self, guild):

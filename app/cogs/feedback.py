@@ -15,31 +15,6 @@ class Feedback(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def create_chan(self, ctx, channame: str ="" ):
-        """
-        This commands create a text channel.
-        Parameters
-        ----------
-        !create_chan channelname
-        """
-        guild = ctx.message.guild
-        await guild.create_text_channel(channame)
-
-    @commands.command()
-    async def delete_chan(self, ctx, given_name=None):
-        """
-        This commands delete a channel.
-        Parameters
-        ----------
-        !delete_chan channelname
-        """
-        for channel in ctx.guild.channels:
-            if channel.name == given_name:
-                #get id = (not usefull yet)
-                wanted_channel_id = channel.id
-                await channel.delete()
-
-    @commands.command()
     async def feedback(self , ctx):
         """
         This command allow you to send us a feedback. You will be redicted into a temp chan to gather your suggestions.
@@ -103,8 +78,9 @@ class Feedback(commands.Cog):
         }
         mydb.user.insert_one(user_feedback)
     
-   
+    
     @commands.command()
+    @commands.has_role('Moderator')
     async def download(self, ctx, option: str = ""):
         """
         This command allow you to download question or answer feedback from our database.
