@@ -19,14 +19,14 @@ class Basic(commands.Cog):
             for channel in guild.text_channels:
                 if channel.name == "my-bot":
                     await channel.send("Hi I'm Homie and I'm ready to assist you.")
-        for guild in self.bot.guilds:
-            for channel in guild.text_channels:
-                if channel.name == "ratings":
-                    await channel.send("Hi here you can feedback my performance by checking emotes.")
+        
+
         for guild in self.bot.guilds:
             for channel in guild.text_channels:
                 if channel.name == "role":
-                    await channel.send("Please react with theses emotes to get access at features")
+                    role_msg = await channel.send("Please react with theses emotes to get access at features")
+                    role_msg
+                    await role_msg.add_reaction("🏃")
         for guild in self.bot.guilds:
             for channel in guild.text_channels:
                 if channel.name == "beer":
